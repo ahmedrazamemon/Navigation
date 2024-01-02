@@ -1,19 +1,3 @@
-// import react from 'react';
-// import AppNavigator from './AppNavigator';
-// import Login from './Components/Login';
-// import { View } from 'react-native';
-// import Spalsh_Screen from './Components/Splash_Screen';
-
-// function App(){
-
-//   return(
-//     <View>
-//      <AppNavigator/>
-//       {/* <Spalsh_Screen/>  */}
-//     </View>
-//     // <Login/>
-//   )
-// }export default App;
 import react from 'react';
 import AppNavigator from './AppNavigator';
 import Login from './Components/Login';
@@ -23,6 +7,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import MyComponent from './Components/Profile';
 
 function App() {
-  return <AppNavigator />;
+
+  return<AppNavigator />
+  
 }
 export default App;

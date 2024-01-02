@@ -17,7 +17,7 @@ function Spalsh_Screen({navigation}) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 600,
+        height: 800,
         backgroundColor:"#ecf0f1"
       }}>
         <Text style={{fontFamily:"Pacifico-Regular",fontSize:40}}>

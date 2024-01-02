@@ -9,6 +9,8 @@ import HelpForm from './Components/Help';
 import Profile from './Components/Profile';
 import Logout from './Logout';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // You may need to install this package
+import Spalsh_Screen from './Components/Splash_Screen';
+import Bottom from './Bottom';
 
 const Drawer = createDrawerNavigator();
 
@@ -70,7 +72,7 @@ function MyDrawer() {
       <Drawer.Screen name="Donation" component={Donate} />
       <Drawer.Screen name="Help" component={HelpForm} />
       <Drawer.Screen name="Profile" component={Profile} />
-      <Drawer.Screen name="Logout" component={Logout} />
+      <Drawer.Screen name="Logout" options={{headerShown:false}} component={Bottom} />
     </Drawer.Navigator>
   );
 }
