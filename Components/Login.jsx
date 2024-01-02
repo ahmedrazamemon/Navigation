@@ -1,154 +1,138 @@
-import React,{useState} from "react";
-import { Alert, StatusBar, StyleSheet, Text, View } from "react-native";
-import { Button, TextInput } from 'react-native-paper';
+import React, {useState} from 'react';
+import {
+  Alert,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Image
+} from 'react-native';
+import {Button, TextInput,ActivityIndicator,MD2Colors} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import Snackbar from 'react-native-snackbar';
 
+function Login({navigation}) {
+  // const [name, setname] = useState('');
+  const [email, setemail] = useState('');
+  const [showpassword, setshowpassword] = useState(true)
 
+  const [password, setpassword] = useState('');
 
-function Login(){
-  const [name, setname] =  useState("");
-  const [email, setemail] =  useState("");
-  const [password, setpassword] =  useState("");
-
-  const createEmailPassword = () => {
-    if (name == '') {
+  const signinwithemail  = async () => {
+    if (email == '') {
       Snackbar.show({
-        text: 'Must Enter Name',
+        text: 'Must Enter Enail',
         duration: Snackbar.LENGTH_SHORT,
         backgroundColor: 'black',
         textColor: 'red',
-        // fontFamily:"serif",
-        // fontSize: 20,
-      });
-    } else if (email == '') {
-      Snackbar.show({
-        text: 'Enter Email Address',
-        duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: 'black',
-        textColor: 'red',
-        // fontSize: 20,
-      });
-    } else if (name == '') {
-      Snackbar.show({
-        text: 'Must Enter name',
-        duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: 'black',
-        textColor: 'red',
-        // fontSize: 20,
       });
     } else if (password == '') {
       Snackbar.show({
-        text: 'Enter Password',
-        duration: Snackbar.LENGTH_SHORT,
-        // margin: 20,
-        backgroundColor: 'black',
-        textColor: 'red',
-        // fontSize: 20,
-      });
-    } else if (
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false
-    ) {
-      Snackbar.show({
-        text: 'Enter Valid Email',
+        text: 'Enter Email password',
         duration: Snackbar.LENGTH_SHORT,
         backgroundColor: 'black',
-        textColor: 'yellow',
-      });
-    } else if (
-
-        console.log("sxas")
-      // Alert.alert('Account Created..')
-      // console.log("")
-      // navigation.push("Spalsh_Screen")
-      // /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password) ==
-      // false
-    ) {
-      Snackbar.show({
-        text: 'Plz valid password',
-        duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: 'grey',
         textColor: 'red',
       });
-    } else {
-      console.log(email);
-      auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(res => {
-          console.log(res.user.uid);
-          Alert.alert("Account Created !")
-          // database()
-          //   .ref('/users/allusers')
-          //   .push({
-          //     username: name,
-          //     emaildd: email,
-          //   })
-            // .then(() => console.log('Data set.'));
-        })
-        .catch(err => {
-          if (err.code == 'auth/email-already-in-use') {
-            // Alert.alert('Email is ALready regsiter');
-            Alert.alert("alredy exists")
-          }
-        });
     }
+    
+      try{
+
+        await auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(res=>{
+          console.log(res.user.uid)
+          
+          Snackbar.show({
+            text: 'Logged In',
+            duration: Snackbar.LENGTH_SHORT,
+            backgroundColor: 'black',
+            textColor: 'gold',
+          });
+          navigation.replace("Drawer")
+          // signInWithEmailAndPassword(email,password)
+        })
+        console.log(res)
+      }
+      catch(e){
+        // Alert.alert(e.code)
+  
+      
+    }
+    
   };
 
-  return(
-    <View>
-      <StatusBar barStyle={"default"}/>
-      <Text style={{textAlign:"center"}}>
-Welcome!
-      </Text>
-      {/* <View> */}
+  return (
+    <ScrollView style={Style.body}> 
+    
+    <View style={Style.main}> 
+    <Text style={{textAlign:"center",fontSize:30}}>Login</Text>
+{/* <Icon name="user" size={60}/> */}
+<Image style={{marginLeft:"auto",marginRight:"auto",width:100,height:100}} width={70} height={10} source={{uri:'https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/avatar-512.png'}}/>
+  
+    <TextInput
 
-<View style={Style.main}>
+            onChangeText={(e) => setemail(e)}
+            value={email}
+            mode="outlined"
+            style={{ backgroundColor: "white", color: "blue", margin: 20 }}
+            label="Email"
+            left={<TextInput.Icon icon="account" color={"black"} />}
+        />
+        <TextInput
+            value={password}
+            onChangeText={(e) => setpassword(e)}
+            mode="outlined"
+            style={{ backgroundColor: "white", color: "blue", marginVertical: 2, marginHorizontal: 20 }}
+            label="Password"
+            secureTextEntry={showpassword}
+            left={<TextInput.Icon icon="lock" color={"black"} />}
+            right={
+                showpassword ?
+                    <TextInput.Icon icon="eye-off" color={"black"} onPress={() => setshowpassword(false)} />
+                    :
+                    <TextInput.Icon icon="eye" color={"black"} onPress={() => setshowpassword(true)} />
 
-      <TextInput style={Style.form}
-      label="Name"
-      value={name}
-      onChangeText={(e) => setname(e) 
-      }
-      />
-          {/* </Text> */}
-      <TextInput style={Style.form}
-      label="Email"
-      value={email}
-      onChangeText={(e) => setemail(e)}
-    />
-          {/* </Text> */}
-    {/* </View> */}
-    <TextInput style={Style.form}
-    label="Password"
-    value={password}
-    onChangeText={(e) => setpassword(e)}
-  />
-  <Button onPress={()=>createEmailPassword()}>
-    Submit
-  </Button>
-    </View>
-    </View>
-  )
-}export default Login;
+            }
+        />
+       <TouchableOpacity onPress={()=>signinwithemail()}>
+        <Text style={Style.form}>Login</Text>
+       </TouchableOpacity>
+       
+        {/* <ActivityIndicator animating={true} Type={"large"} color={MD2Colors.black800} /> */}
+       
+   
+       
+       </View>
+       </ScrollView>
+  );
+}
+export default Login;
 
 const Style = StyleSheet.create({
-main:{
-  display:"flex",
-  justifyContent:"center",
-    height:600,
+ 
+ body:{
+  backgroundColor: 'rgb(229 240 216)',
+  // backgroundColor: '#ececec',
+  height:800
+ },
+  main: {
+    display: 'flex',
+    justifyContent: 'center',
+    height: 600,
     // backgroundColor:"beige"
+  },
 
-
-},
-
-  form:{
-    display:"flex",
-    margin:10,
-    width:"auto",
+  form: {
+    display: 'flex',
+    margin: 10,
+    width: '500px',
+    textAlign:"center",
     // height:600,
-    padding:3,
+    padding: 3,
     // alignItems:"center",
-    justifyContent:"center",
+    justifyContent: 'center',
     // alignContent:"center"
-  }
-})
+  },
+});
